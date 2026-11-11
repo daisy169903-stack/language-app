@@ -6,6 +6,8 @@ Magyar nyelvű, északi vietnámit célzó tanulóalkalmazás. Az első lecke te
 
 A telefonra telepíthető fájl: **`release/VietLingo-HU-Android.apk`**. A projekt privát GitHub-tárolója: [daisy169903-stack/language-app](https://github.com/daisy169903-stack/language-app). A kiadások az APK-t tartalmazzák; a podcast-hangcsomag külön privát fájl.
 
+Ellenőrzött kiadás: [v0.3.0](https://github.com/daisy169903-stack/language-app/releases/tag/v0.3.0). Ezt a helyben aláírt APK-ból tettük közzé; az aláírókulcs nem került feltöltésre. A jövőbeli Actions-buildek aláírásához a külön jóváhagyásra váró secretbeállítás még szükséges.
+
 1. Töltsd le az APK-t a telefonodra a saját Google Drive-odból.
 2. Nyisd meg a letöltött fájlt, és kövesd az Android telepítőjének lépéseit.
 3. Indítsd el a **VietLingo HU** alkalmazást.

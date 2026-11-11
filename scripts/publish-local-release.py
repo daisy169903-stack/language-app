@@ -43,12 +43,17 @@ def main():
         if error.code!=404:raise
         release=request(base,'POST',{'tag_name':tag,'target_commitish':'main','name':'VietLingo HU '+tag,'draft':True,'prerelease':False,'body':'Android update checker and private local audio workflow. Podcast recordings are not bundled. Import your separate private review pack in Profile. Existing progress is preserved when updating with the same signing identity. APK SHA256: '+hashlib.sha256(contents).hexdigest()})
     if any(a.get('name')=='VietLingo-HU-Android.apk' for a in release.get('assets',[])):
-        print(json.dumps({'url':release['html_url'],'existing_asset_preserved':True}));return
+        asset=next(a for a in release['assets'] if a['name']=='VietLingo-HU-Android.apk')
+        expected=f'https://github.com/{repository}/releases/download/{tag}/VietLingo-HU-Android.apk'
+        if asset['browser_download_url']!=expected or release.get('draft'):raise ValueError('Release is not ready for the app updater')
+        print(json.dumps({'url':release['html_url'],'asset_url':asset['browser_download_url'],'size':asset['size'],'tag':release['tag_name'],'existing_asset_preserved':True}));return
     upload=f'https://uploads.github.com/repos/{repository}/releases/{int(release["id"])}/assets?name=VietLingo-HU-Android.apk'
     asset=request(upload,'POST',contents,True)
     if int(asset['size'])!=len(contents):raise ValueError('Uploaded APK size mismatch')
     if release.get('draft'):
         release=request(base+'/'+str(release['id']),'PATCH',{'draft':False,'make_latest':'true'})
+    release=request(base+'/tags/'+tag)
+    asset=next(a for a in release['assets'] if a['name']=='VietLingo-HU-Android.apk')
     print(json.dumps({'url':release['html_url'],'asset_url':asset['browser_download_url'],'size':asset['size'],'sha256':hashlib.sha256(contents).hexdigest(),'signing_key_transmitted':False}))
 
 if __name__=='__main__':
