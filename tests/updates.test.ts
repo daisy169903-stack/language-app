@@ -18,8 +18,11 @@ const release = {
   assets: [{ name: APK_NAME, browser_download_url: apk }],
 };
 function mockFetch(body: unknown, status = 200): typeof fetch {
-  return (async () =>
-    new Response(JSON.stringify(body), { status })) as typeof fetch;
+  return (async (_url, options) => {
+    assert.equal(new Headers(options?.headers).has("Authorization"), false);
+    assert.equal(options?.credentials, "omit");
+    return new Response(JSON.stringify(body), { status });
+  }) as typeof fetch;
 }
 
 test("repository accepts owner/repo and HTTPS GitHub URL only", () => {
@@ -94,7 +97,7 @@ test("stable newer release returns verified APK without sending credentials", as
   );
 });
 
-test("private token is sent only to fixed GitHub API and invalid input makes no request", async () => {
+test("public checks always omit authorization and invalid repositories make no request", async () => {
   let calls = 0;
   const fetchImpl = (async (url, options) => {
     calls++;
@@ -102,23 +105,13 @@ test("private token is sent only to fixed GitHub API and invalid input makes no 
       String(url),
       "https://api.github.com/repos/example/vietlingo/releases/latest",
     );
-    assert.equal(
-      new Headers(options?.headers).get("Authorization"),
-      "Bearer private-read-token",
-    );
+    assert.equal(new Headers(options?.headers).has("Authorization"), false);
+    assert.equal(options?.credentials, "omit");
     assert.equal(options?.redirect, "error");
     return new Response(JSON.stringify(release));
   }) as typeof fetch;
   assert.equal(
-    (
-      await checkForUpdate(
-        "example/vietlingo",
-        "0.2.0",
-        fetchImpl,
-        undefined,
-        "private-read-token",
-      )
-    ).status,
+    (await checkForUpdate("example/vietlingo", "0.2.0", fetchImpl)).status,
     "available",
   );
   assert.equal(
@@ -127,21 +120,13 @@ test("private token is sent only to fixed GitHub API and invalid input makes no 
         "https://evil.test/example/vietlingo",
         "0.2.0",
         fetchImpl,
-        undefined,
-        "private-read-token",
       )
     ).status,
     "invalidConfiguration",
   );
   assert.equal(calls, 1);
   assert.deepEqual(
-    await checkForUpdate(
-      "example/vietlingo",
-      "0.2.0",
-      mockFetch({}, 401),
-      undefined,
-      "expired",
-    ),
+    await checkForUpdate("example/vietlingo", "0.2.0", mockFetch({}, 401)),
     { status: "unauthorized" },
   );
 });

@@ -15,10 +15,12 @@ const page = await ctx.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
 let auth = "";
+const authorizations = [];
 let calls = 0;
 await ctx.route("https://api.github.com/**", (route) => {
   calls++;
   auth = route.request().headers().authorization || "";
+  authorizations.push(auth);
   return route.fulfill({
     status: 200,
     contentType: "application/json",
@@ -100,24 +102,18 @@ try {
   await nav("Profil");
   await page.getByRole("heading", { name: "Alkalmazásfrissítés" }).waitFor();
   await page.getByText("Új verzió érhető el: 0.4.0", { exact: true }).waitFor();
-  await page
-    .getByLabel("GitHub olvasási token (nem kötelező)")
-    .fill("TEST_ONLY_NOT_A_REAL_CREDENTIAL");
-  await page
-    .getByRole("button", { name: "Token biztonságos mentése", exact: true })
-    .click();
-  await page
-    .getByRole("status")
-    .filter({ hasText: "Token elmentve." })
-    .waitFor();
-  await page.getByText("Új verzió érhető el: 0.4.0", { exact: true }).waitFor();
-  assert.equal(auth, "Bearer TEST_ONLY_NOT_A_REAL_CREDENTIAL");
+  assert.equal(await page.locator('input[type="password"]').count(), 0);
   assert.equal(
-    await page.evaluate(() =>
-      JSON.stringify(localStorage).includes("TEST_ONLY_NOT_A_REAL_CREDENTIAL"),
-    ),
-    false,
+    await page.locator(".update-settings").getByText(/token/i).count(),
+    0,
   );
+  assert.equal(auth, "");
+  await page
+    .getByRole("button", { name: "Frissítések keresése", exact: true })
+    .click();
+  await page.getByText("Új verzió érhető el: 0.4.0", { exact: true }).waitFor();
+  assert.equal(calls, 2);
+  assert.equal(auth, "");
   const uploader = page.locator(".audio-settings input[type=file]");
   await uploader.setInputFiles(file(pack));
   await page
@@ -183,13 +179,22 @@ try {
   await page.reload();
   await nav("Profil");
   await page.getByText("1 jóváhagyott felvétel.", { exact: false }).waitFor();
+  assert.equal(await page.locator('input[type="password"]').count(), 0);
+  assert.equal(
+    await page.locator(".update-settings").getByText(/token/i).count(),
+    0,
+  );
+  assert.equal(auth, "");
   await page
-    .getByLabel("GitHub olvasási token (nem kötelező)")
-    .getAttribute("placeholder")
-    .then((p) => assert.notEqual(p, "Token már mentve"));
+    .getByRole("button", { name: "Frissítések keresése", exact: true })
+    .click();
+  await page.getByText("Új verzió érhető el: 0.4.0", { exact: true }).waitFor();
+  assert.equal(calls, 3);
+  assert.equal(auth, "");
+  assert.deepEqual(authorizations, ["", "", ""]);
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: app-start update notification/private auth mocked, no browser token persistence, imported real49pendingclips withoutapproval, review gate requires playback+confirmation, WAV playback/IndexedDB persistence/corrupt pack protection. Approval/playback test used explicitly synthetic QA tone only.",
+    "PASS: app-start update notification/public release mocked, repository-only UI with no passwords or Authorization before and after reload, imported real49pendingclips withoutapproval, review gate requires playback+confirmation, WAV playback/IndexedDB persistence/corrupt pack protection. Approval/playback test used explicitly synthetic QA tone only.",
   );
 } finally {
   await browser.close();

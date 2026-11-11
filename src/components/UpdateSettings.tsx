@@ -8,11 +8,6 @@ import {
   UPDATE_INTERVAL,
   type UpdateResult,
 } from "../updates";
-import {
-  getUpdateToken,
-  setUpdateToken,
-  clearUpdateToken,
-} from "../secureStore";
 
 const SETTINGS_KEY = "vietlingo.updateSettings.v1";
 type Settings = { repository: string; automatic: boolean; lastCheck: number };
@@ -47,9 +42,9 @@ const messages: Record<string, string> = {
     "Nem sikerült kapcsolódni. Ellenőrizd az internetkapcsolatot, majd próbáld újra.",
   rateLimit: "A GitHub lekérési korlátja elérve. Próbáld újra később.",
   invalidConfiguration:
-    "Ellenőrizd a GitHub-tároló címét és a hozzáférést. Legalább egy közzétett kiadás szükséges; privát tárolóhoz olvasási token kell.",
+    "Ellenőrizd a GitHub-tároló címét. Nyilvános tároló és legalább egy közzétett kiadás szükséges.",
   unauthorized:
-    "Nincs GitHub-hozzáférés. Ellenőrizd a token érvényességét és a tároló olvasási jogosultságát.",
+    "A GitHub nem engedélyezte a lekérést. Ellenőrizd, hogy a tároló nyilvános-e, majd próbáld újra később.",
   unavailable:
     "Jelenleg nincs letölthető, támogatott Android-kiadás. Próbáld újra később.",
 };
@@ -62,9 +57,6 @@ export default function UpdateSettings() {
   >({ status: "idle" });
   const [storageError, setStorageError] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const [tokenInput, setTokenInput] = useState("");
-  const [hasToken, setHasToken] = useState(false);
-  const [tokenMessage, setTokenMessage] = useState("");
   const active = useRef<AbortController | null>(null);
   function persist(next: Settings) {
     setSettings(next);
@@ -82,14 +74,11 @@ export default function UpdateSettings() {
     setResult({ status: "checking" });
     persist({ ...current, lastCheck: Date.now() });
     try {
-      const token = await getUpdateToken();
-      if (controller.signal.aborted) return;
       const next = await checkForUpdate(
         current.repository,
         version,
         fetch,
         controller.signal,
-        token,
       );
       if (!controller.signal.aborted) {
         setResult(next);
@@ -103,14 +92,10 @@ export default function UpdateSettings() {
     } catch {
       if (!controller.signal.aborted) {
         setResult({ status: "unavailable" });
-        setTokenMessage("A biztonságos tokentároló nem érhető el.");
       }
     }
   }
   useEffect(() => {
-    void getUpdateToken()
-      .then((token) => setHasToken(Boolean(token)))
-      .catch(() => setTokenMessage("A biztonságos tokentároló nem érhető el."));
     if (
       settings.automatic &&
       parseRepository(settings.repository) &&
@@ -150,33 +135,6 @@ export default function UpdateSettings() {
       setOpenError(true);
     }
   }
-  async function saveToken() {
-    try {
-      await setUpdateToken(tokenInput.trim());
-      setHasToken(Boolean(tokenInput.trim()));
-      setTokenInput("");
-      setTokenMessage("Token elmentve.");
-      active.current?.abort();
-      setResult({ status: "idle" });
-      if (settings.automatic && parseRepository(settings.repository)) {
-        void check({ ...settings, lastCheck: 0 });
-      }
-    } catch {
-      setTokenMessage("A tokent nem sikerült biztonságosan elmenteni.");
-    }
-  }
-  async function deleteToken() {
-    try {
-      active.current?.abort();
-      await clearUpdateToken();
-      setHasToken(false);
-      setTokenInput("");
-      setTokenMessage("Token törölve.");
-      setResult({ status: "idle" });
-    } catch {
-      setTokenMessage("A tokent nem sikerült törölni.");
-    }
-  }
   return (
     <section
       className="update-settings settings-card"
@@ -184,7 +142,8 @@ export default function UpdateSettings() {
     >
       <h2 id="updates-heading">Alkalmazásfrissítés</h2>
       <p>
-        Telepített verzió: {version}. A frissítések GitHub-kiadásokból érkeznek.
+        Telepített verzió: {version}. A frissítések nyilvános GitHub-kiadásokból
+        érkeznek, bejelentkezés és hozzáférési kulcs nélkül.
       </p>
       <label htmlFor="update-repository">GitHub-tároló címe</label>
       <input
@@ -201,41 +160,6 @@ export default function UpdateSettings() {
       <button type="button" onClick={save}>
         Tároló mentése
       </button>
-      <p>
-        Privát tárolóhoz hozz létre egy kizárólag ehhez a tárolóhoz tartozó,
-        „Contents: Read-only” jogosultságú GitHub fine-grained tokent. Ide írd
-        be, ne a csevegésbe. Androidon titkosítva tároljuk; böngészőben csak az
-        aktuális munkamenetben marad meg.
-      </p>
-      <label htmlFor="update-token">GitHub olvasási token (nem kötelező)</label>
-      <input
-        id="update-token"
-        type="password"
-        autoComplete="off"
-        autoCapitalize="none"
-        spellCheck={false}
-        value={tokenInput}
-        onChange={(event) => setTokenInput(event.target.value)}
-        placeholder={hasToken ? "Token már mentve" : "github_pat_…"}
-      />
-      <button
-        type="button"
-        disabled={!tokenInput.trim()}
-        onClick={() => void saveToken()}
-      >
-        Token biztonságos mentése
-      </button>
-      <button
-        type="button"
-        disabled={!hasToken}
-        onClick={() => void deleteToken()}
-      >
-        Token törlése
-      </button>
-      <p role="status">
-        {tokenMessage ||
-          (hasToken ? "Olvasási token elmentve." : "Nincs mentett token.")}
-      </p>
       <label>
         <input
           type="checkbox"
@@ -268,7 +192,6 @@ export default function UpdateSettings() {
               Android-frissítés letöltése
             </button>
             <p>
-              Privát tárolónál a böngészőben is be kell jelentkezned a GitHubra.
               A telepítést az Android rendszerben kell jóváhagynod. Az adatok
               megőrzéséhez ne távolítsd el az alkalmazást.
             </p>

@@ -41,7 +41,7 @@ def main():
         release=request(base+'/tags/'+tag)
     except urllib.error.HTTPError as error:
         if error.code!=404:raise
-        release=request(base,'POST',{'tag_name':tag,'target_commitish':'main','name':'VietLingo HU '+tag,'draft':True,'prerelease':False,'body':'Android update checker and private local audio workflow. Podcast recordings are not bundled. Import your separate private review pack in Profile. Existing progress is preserved when updating with the same signing identity. APK SHA256: '+hashlib.sha256(contents).hexdigest()})
+        release=request(base,'POST',{'tag_name':tag,'target_commitish':'main','name':'VietLingo HU '+tag,'draft':True,'prerelease':False,'body':'Repository-address-only GitHub updates: no phone token or login. Obsolete updater credentials are cleared on Android. Podcast recordings remain separate from the APK. Existing learning progress and imported audio are preserved when updating with the same signing identity. APK SHA256: '+hashlib.sha256(contents).hexdigest()})
     if any(a.get('name')=='VietLingo-HU-Android.apk' for a in release.get('assets',[])):
         asset=next(a for a in release['assets'] if a['name']=='VietLingo-HU-Android.apk')
         expected=f'https://github.com/{repository}/releases/download/{tag}/VietLingo-HU-Android.apk'

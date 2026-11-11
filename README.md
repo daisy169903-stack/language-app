@@ -1,10 +1,10 @@
-# VietLingo HU — Android, 0.3
+# VietLingo HU — Android, 0.3.1
 
 Magyar nyelvű, északi vietnámit célzó tanulóalkalmazás. Az első lecke teljesen kezdőknek készült: három kifejezést **előbb megtanít**, és csak ezután kérdez. Nem kell még mondatokat alkotni vagy vietnámi tónusokat ismerni.
 
 ## Használat Androidon
 
-A telefonra telepíthető fájl: **`release/VietLingo-HU-Android.apk`**. A projekt privát GitHub-tárolója: [daisy169903-stack/language-app](https://github.com/daisy169903-stack/language-app). A kiadások az APK-t tartalmazzák; a podcast-hangcsomag külön privát fájl.
+A telefonra telepíthető fájl: **`release/VietLingo-HU-Android.apk`**. A projekt nyilvános GitHub-tárolója: [daisy169903-stack/language-app](https://github.com/daisy169903-stack/language-app). A kiadások az APK-t tartalmazzák; a podcast-hangcsomag külön privát fájl.
 
 Ellenőrzött kiadás: [v0.3.0](https://github.com/daisy169903-stack/language-app/releases/tag/v0.3.0). Ezt a helyben aláírt APK-ból tettük közzé; az aláírókulcs nem került feltöltésre. A jövőbeli Actions-buildek aláírásához a külön jóváhagyásra váró secretbeállítás még szükséges.
 
@@ -92,7 +92,7 @@ A mobilos böngésző-ellenőrzés nem helyettesíti a valódi Android-tesztet. 
 
 ## GitHub-frissítés és saját hanganyag (0.3)
 
-A Profil → Alkalmazásfrissítés a privát daisy169903-stack/language-app tárolót ellenőrzi. Az alkalmazás indításakor legfeljebb naponta egyszer keres, és kézi ellenőrzés is van. Privát tárolóhoz a felhasználó egy kizárólag ehhez a tárolóhoz tartozó, Contents: Read-only tokent írhat az alkalmazás jelszómezőjébe; soha ne a csevegésbe vagy a forráskódba. Androidon a token Keystore-kulccsal titkosítva tárolódik, nem kerül a tanulási exportba vagy a biztonsági mentésbe. Az APK letöltése ellenőrzött GitHub URL-ről, a telefon böngészőjében történik; a telepítést az Androidban a felhasználó erősíti meg. A böngészőben is GitHub-bejelentkezés kell a privát kiadáshoz. [Részletek](docs/UPDATES.md).
+A Profil → Alkalmazásfrissítés alatt csak a GitHub-tároló címe szükséges, például https://github.com/daisy169903-stack/language-app. A tárolót a felhasználó kifejezett kérésére nyilvánossá tettük. Nincs tokenmező, bejelentkezés vagy telefonon megadandó GitHub-hitelesítő adat. Az ellenőrzés névtelen HTTPS-kérés, átirányítás és Authorization fejléc nélkül. Induláskor legfeljebb naponta egyszer keres, és kézi ellenőrzés is van. Csak nyilvános, közzétett GitHub Releases APK-k használhatók. Android-frissítéskor a régi opcionális token titkosított tárát és Keystore-kulcsát eltávolítjuk; a tanulási adatokat és felvételeket megőrizzük. [Részletek](docs/UPDATES.md).
 
 A verzió növelése és main/master push után a mellékelt workflow készít új kiadást, ha az eredeti aláírókulcs megfelelő Actions secretként rendelkezésre áll. Az aláírókulcs GitHubra töltése külön kifejezett engedélyt igényel; engedély nélkül helyben marad. Azonos verzió kiadását a workflow nem írja felül.
 
@@ -102,4 +102,4 @@ A szabadon elérhető [Vietlingo Greetings északi epizódon](https://vietlingo.
 
 A podcastfelvétel, átirat, modellek, klipcsomag és aláírókulcs nincs a GitHub-forrásban vagy az APK-ban. A Vite buildvédelem elutasítja a privát hangcsomagokat és az engedélyezési adatok nélküli hangokat a public mappában. A telefonon importált hangok az IndexedDB-hangtárban maradnak, alkalmazásfrissítéskor nem cseréljük le őket.
 
-A tests/audio-ui.mjs az induláskori frissítési jelzést, a hangimportot, a lejátszás + megerősítés feltételét, a valós pending csomag betöltését, a WAV-lejátszást és a sérült csomag elutasítását ellenőrzi. A jóváhagyás mechanikus tesztje külön szintetikus síphangot használ, nem igazolja a vietnámi kiejtést. Fizikai telefonos upgrade, Keystore, billentyűzet és lejátszás még készüléktesztet igényel.
+A tests/audio-ui.mjs az induláskori frissítési jelzést, a hangimportot, a lejátszás + megerősítés feltételét, a valós pending csomag betöltését, a WAV-lejátszást és a sérült csomag elutasítását ellenőrzi. A jóváhagyás mechanikus tesztje külön szintetikus síphangot használ, nem igazolja a vietnámi kiejtést. Fizikai telefonos upgrade, billentyűzet és lejátszás még készüléktesztet igényel.

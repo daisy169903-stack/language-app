@@ -55,7 +55,6 @@ export async function checkForUpdate(
   currentVersion: string,
   fetchImpl: typeof fetch = fetch,
   signal?: AbortSignal,
-  token = "",
 ): Promise<UpdateResult> {
   const repository = parseRepository(repositoryInput);
   if (!repository || !parseVersion(currentVersion))
@@ -66,14 +65,10 @@ export async function checkForUpdate(
   if (signal?.aborted) controller.abort();
   const timeout = setTimeout(abort, 8000);
   try {
-    const headers: Record<string, string> = {
-      Accept: "application/vnd.github+json",
-    };
-    if (token.trim()) headers.Authorization = `Bearer ${token.trim()}`;
     const response = await fetchImpl(
       `https://api.github.com/repos/${repository.owner}/${repository.repo}/releases/latest`,
       {
-        headers,
+        headers: { Accept: "application/vnd.github+json" },
         signal: controller.signal,
         credentials: "omit",
         redirect: "error",
