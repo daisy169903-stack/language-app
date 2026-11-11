@@ -1,4 +1,4 @@
-# VietLingo HU — Android, 0.3.2
+# VietLingo HU — Android, 0.3.3
 
 Magyar nyelvű, északi vietnámit célzó tanulóalkalmazás. Az első lecke teljesen kezdőknek készült: három kifejezést **előbb megtanít**, és csak ezután kérdez. Nem kell még mondatokat alkotni vagy vietnámi tónusokat ismerni.
 
@@ -79,7 +79,7 @@ node node_modules/typescript/bin/tsc -b
 node node_modules/vite/bin/vite.js build
 ```
 
-A 27 TypeScript/domain-/IndexedDB-/frissítési/buildvédelmi teszt és a 9 Python hangfeldolgozó-teszt sikeres, beleértve a régi mentések adatvesztés nélküli migrációját. A production build és a mobilos böngészőteszt is sikeres. Utóbbi 320/390/412 px telefonos nézeteket, asztali előnézetet, tanítás előtti kérdezés kizárását, az első lecke teljes menetét, helyi mentést, újratöltést, export/importot, saját szókincset és az ismétlés XP-korlátját ellenőrzi. A normál input tulajdonságait és a saját karakterbillentyűzet hiányát is vizsgálja.
+A 28 TypeScript/domain-/IndexedDB-/frissítési/buildvédelmi teszt és a 9 Python hangfeldolgozó-teszt sikeres, beleértve a régi mentések adatvesztés nélküli migrációját. A production build és a mobilos böngészőteszt is sikeres. Utóbbi 320/390/412 px telefonos nézeteket, asztali előnézetet, tanítás előtti kérdezés kizárását, az első lecke teljes menetét, helyi mentést, újratöltést, export/importot, saját szókincset és az ismétlés XP-korlátját ellenőrzi. A normál input tulajdonságait és a saját karakterbillentyűzet hiányát is vizsgálja.
 
 Opcionális böngészőteszt, futó production preview mellett:
 
@@ -106,6 +106,14 @@ A tests/audio-ui.mjs az induláskori frissítési jelzést, a hangimportot, a le
 
 ## Első szavak online hangja (0.3.2)
 
-A `src/sourceAudio.ts` csak az eredeti kiadói MP3 URL-jét, a forrásoldalt és a chào / cảm ơn időbélyegeit tartalmazza. Nem másol hangot az APK-ba, nem importál vagy hagy jóvá klipet. A lejátszó a metaadatok és az időpontra ugrás befejezése után indítja a hangot, és a részlet végén leáll. Internet és az eredeti kiadói kiszolgáló elérhetősége szükséges. A tạm biệt hangja továbbra sem érhető el ebből az epizódból.
+A `src/sourceAudio.ts` csak az eredeti kiadói MP3 URL-jét, a forrásoldalt és a chào / cảm ơn időbélyegeit tartalmazza. Nem másol hangot az APK-ba, nem importál vagy hagy jóvá klipet. A lejátszó a metaadatok és az időpontra ugrás befejezése után indítja a hangot, és a részlet végén leáll. Internet és az eredeti kiadói kiszolgáló elérhetősége szükséges. A tạm biệt nem szerepel ebben az epizódban; a 0.3.3-as verzió külön eredeti szófelvételt használ hozzá.
 
 A `tests/source-audio-ui.mjs` a valódi kiadói MP3 dekódolását, a helyes kezdési/végpontot és az újrajátszást ellenőrzi mobilos böngészőnézetben. Nem igazolja a fizikai Android-készülék lejátszását vagy az anyanyelvi lektorálást.
+
+## Hiányzó búcsúzás hangja (0.3.3)
+
+Mindhárom kezdő kifejezéshez elérhető online hang import nélkül. A tạm biệt eredeti, teljes szófelvétele a [VietnamesePod101 szabad szókincslistájából](https://www.vietnamesepod101.com/vietnamese-vocabulary-lists/most-common-ways-to-say-goodbye) származik. A kiadó [saját csapatának tájékoztatása](https://www.vietnamesepod101.com/forum/viewtopic.php?t=35) szerint az alap kurzus északi vietnámit használ; a külön megnevezett déli sorozatot nem használjuk. Ez kiadói akcentusadat, nem független anyanyelvi lektorálás.
+
+A publikus oldalon a normál lejátszógomb fiók nélkül valóban a `https://d1pra95f92lrn3.cloudfront.net/audio/174745.mp3` fájlt játssza le (HTTP 206). A teljes eredeti felvétel 1,071 másodperc; a helyi ASR eredménye „Tạm biệt.”. A hang nincs az APK-ba vagy a GitHub-forrásba másolva. Az online lejátszás internetet és a kiadói kiszolgáló elérhetőségét igényli; a saját importált hang továbbra is elsőbbséget élvez.
+
+A forrás-regressziós teszt minden leckebeli hangazonosítóhoz megkövetel egy online forrást. A mobilos böngészőteszt mindhárom valódi felvétel lejátszását ellenőrzi; a fizikai telefonos teszt továbbra is hátravan.

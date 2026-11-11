@@ -6,9 +6,9 @@
   "reviewStatus": "draft",
   "contentNote": "Nyelvi vázlat; anyanyelvi ellenőrzés még nem történt.",
   "audio": {
-    "status": "placeholder",
+    "status": "online-source",
     "targetAccent": "northern",
-    "note": "Saját, ellenőrzött hangcsomag a Profil képernyőn importálható."
+    "note": "Mindhárom kifejezéshez elérhető eredeti online hang. Internet szükséges. Saját, ellenőrzött hangcsomag a Profil képernyőn importálható offline használathoz."
   },
   "objectives": [
     "Megismered a chào, cảm ơn és tạm biệt jelentését.",

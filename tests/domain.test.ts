@@ -79,7 +79,7 @@ test("first lesson teaches three expressions before recognition, then reuses onl
   }
   assert.equal(new Set(lesson.exercises.map((ex) => ex.id)).size, 6);
   assert.equal(lesson.reviewStatus, "draft");
-  assert.equal(lesson.audio?.status, "placeholder");
+  assert.equal(lesson.audio?.status, "online-source");
 });
 
 test("daily activity stores earned XP and retains zero-XP replay days", () => {

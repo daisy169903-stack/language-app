@@ -31,7 +31,11 @@ export interface Lesson {
   durationMinutes: number;
   reviewStatus: "draft";
   contentNote?: string;
-  audio?: { status: "placeholder"; targetAccent: "northern"; note: string };
+  audio?: {
+    status: "placeholder" | "online-source";
+    targetAccent: "northern";
+    note: string;
+  };
   objectives: string[];
   exercises: Exercise[];
 }

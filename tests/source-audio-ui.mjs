@@ -76,6 +76,22 @@ try {
     .getByRole("button", { name: "cảm ơn meghallgatása", exact: true })
     .click();
   const second = await clipBounds(246.64, 247.4);
+  await page.getByRole("button", { name: "Kipróbálom", exact: true }).click();
+  await page.getByRole("button", { name: "köszönöm", exact: true }).click();
+  await page.getByRole("button", { name: "Ellenőrzés", exact: true }).click();
+  await page.getByRole("button", { name: "Következő", exact: true }).click();
+  await page.getByRole("heading", { name: "tạm biệt", exact: true }).waitFor();
+  assert.equal(
+    await page
+      .getByText("Ehhez még nincs ellenőrzött hang.", { exact: true })
+      .count(),
+    0,
+  );
+  await page
+    .getByRole("button", { name: "tạm biệt meghallgatása", exact: true })
+    .click();
+  const third = await clipBounds(0, 1.071);
+  await page.screenshot({ path: "qa/tam-biet-working-online.png" });
   const count = await page.evaluate(
     () =>
       new Promise((resolve, reject) => {
@@ -100,9 +116,10 @@ try {
   console.log(
     JSON.stringify({
       result:
-        "PASS: first-lesson original podcast audio actually decodes, seeks, stops and replays without importing or approving clips",
+        "PASS: first-lesson original source recordings decode and stop correctly; podcast excerpts seek and replay without importing or approving clips",
       chao: first,
       camOn: second,
+      tamBiet: third,
       realPhoneVerified: false,
     }),
   );

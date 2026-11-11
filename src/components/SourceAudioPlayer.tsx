@@ -153,14 +153,21 @@ export default function SourceAudioPlayer({ source }: { source: SourceAudio }) {
           újra.
         </p>
       )}
-      <small>Eredeti északi podcast · internet szükséges</small>
+      <small>
+        {source.kind === "podcast"
+          ? "Eredeti északi podcast"
+          : "Eredeti északi szófelvétel"}{" "}
+        · internet szükséges
+      </small>
       <small>
         <a href={source.pageUrl} target="_blank" rel="noopener noreferrer">
           {source.publisher}
         </a>
       </small>
       <small className="source-timing-note">
-        Automatikusan kijelölt részlet; nem anyanyelvi lektorálás.
+        {source.kind === "podcast"
+          ? "Automatikusan kijelölt részlet; nem anyanyelvi lektorálás."
+          : "A tananyag anyanyelvi ellenőrzésre vár."}
       </small>
     </div>
   );
