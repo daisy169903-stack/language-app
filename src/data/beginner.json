@@ -1,0 +1,126 @@
+{
+  "id": "first-words-01",
+  "title": "Az első három szavad",
+  "subtitle": "Szia · köszönöm · viszlát",
+  "durationMinutes": 3,
+  "reviewStatus": "draft",
+  "contentNote": "Nyelvi vázlat; anyanyelvi ellenőrzés még nem történt.",
+  "audio": {
+    "status": "placeholder",
+    "targetAccent": "northern",
+    "note": "Saját, ellenőrzött hangcsomag a Profil képernyőn importálható."
+  },
+  "objectives": [
+    "Megismered a chào, cảm ơn és tạm biệt jelentését.",
+    "Felismered és párosítod a három kifejezést.",
+    "Felidézed, hogyan köszönj: chào."
+  ],
+  "exercises": [
+    {
+      "id": "first-words-chao",
+      "type": "choice",
+      "skill": "vocabulary",
+      "teaching": {
+        "vi": "chào",
+        "hu": "szia",
+        "note": "Ezzel köszönhetsz. Most csak ezt az egy szót jegyezd meg.",
+        "emoji": "👋"
+      },
+      "prompt": "Mit jelent a „chào”?",
+      "context": "Válaszd ki az imént tanult jelentést.",
+      "vietnamese": "chào",
+      "translation": "szia",
+      "options": ["szia", "köszönöm", "viszlát"],
+      "acceptedAnswers": ["szia"],
+      "explanation": "chào = szia. Ez egy köszönés.",
+      "difficulty": 1,
+      "audioId": "greeting.chao"
+    },
+    {
+      "id": "first-words-cam-on",
+      "type": "choice",
+      "skill": "vocabulary",
+      "teaching": {
+        "vi": "cảm ơn",
+        "hu": "köszönöm",
+        "note": "Ezzel megköszönhetsz valamit. A két szó együtt egy kifejezés.",
+        "emoji": "🎁"
+      },
+      "prompt": "Mit jelent a „cảm ơn”?",
+      "context": "Válaszd ki az imént tanult jelentést.",
+      "vietnamese": "cảm ơn",
+      "translation": "köszönöm",
+      "options": ["viszlát", "köszönöm", "szia"],
+      "acceptedAnswers": ["köszönöm"],
+      "explanation": "cảm ơn = köszönöm.",
+      "difficulty": 1,
+      "audioId": "politeness.cam-on"
+    },
+    {
+      "id": "first-words-tam-biet",
+      "type": "choice",
+      "skill": "vocabulary",
+      "teaching": {
+        "vi": "tạm biệt",
+        "hu": "viszlát",
+        "note": "Ezzel elköszönhetsz, amikor elindulsz.",
+        "emoji": "🚶"
+      },
+      "prompt": "Mit jelent a „tạm biệt”?",
+      "context": "Válaszd ki az imént tanult jelentést.",
+      "vietnamese": "tạm biệt",
+      "translation": "viszlát",
+      "options": ["köszönöm", "szia", "viszlát"],
+      "acceptedAnswers": ["viszlát"],
+      "explanation": "tạm biệt = viszlát. Ezzel elköszönünk.",
+      "difficulty": 1,
+      "audioId": "farewell.tam-biet"
+    },
+    {
+      "id": "first-words-matching",
+      "type": "matching",
+      "skill": "reading",
+      "prompt": "Találd meg a három párt!",
+      "context": "Csak a már tanult kifejezésekkel gyakorolunk.",
+      "pairs": [
+        {
+          "vi": "chào",
+          "hu": "szia"
+        },
+        {
+          "vi": "cảm ơn",
+          "hu": "köszönöm"
+        },
+        {
+          "vi": "tạm biệt",
+          "hu": "viszlát"
+        }
+      ],
+      "acceptedAnswers": ["chào=szia|cảm ơn=köszönöm|tạm biệt=viszlát"],
+      "explanation": "chào = szia; cảm ơn = köszönöm; tạm biệt = viszlát.",
+      "difficulty": 1
+    },
+    {
+      "id": "first-words-recall",
+      "type": "recall",
+      "skill": "vocabulary",
+      "prompt": "Hogyan írod vietnámiul: szia?",
+      "context": "Egyetlen szót írj a telefonod billentyűzetével. Az első leckében még az ékezet nélküli választ is elfogadjuk.",
+      "translation": "szia",
+      "acceptedAnswers": ["chào", "chao"],
+      "explanation": "A helyes írásmód: chào. Csak ebben az első leckében fogadjuk el az ékezet nélküli „chao” alakot is.",
+      "difficulty": 1
+    },
+    {
+      "id": "first-words-situation",
+      "type": "choice",
+      "skill": "vocabulary",
+      "prompt": "Találkozol valakivel. Melyikkel köszönsz?",
+      "context": "Válassz a három tanult kifejezés közül.",
+      "options": ["cảm ơn", "tạm biệt", "chào"],
+      "acceptedAnswers": ["chào"],
+      "explanation": "Találkozáskor: chào = szia.",
+      "difficulty": 1
+    }
+  ]
+}
