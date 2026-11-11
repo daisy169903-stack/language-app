@@ -25,4 +25,4 @@ Keep application ID `hu.vietlingo.app` and the signing key unchanged. Android wi
 
 ## Verification limits
 
-Updater unit tests cover version comparison, configuration parsing, URL restrictions, API statuses and cancellation. CI requires the repository and signing secrets to be configured before an actual GitHub release and an on-device upgrade can be verified. Test the first published update on the existing installed app and confirm its saved progress and recordings remain available.
+Updater unit tests cover version comparison, configuration parsing, URL restrictions, API statuses and cancellation. The v0.3.0 APK was published from the locally signed build without transmitting its private signing key. Authenticated live checks correctly report v0.3.0 as available to 0.2.0 and current to 0.3.0. The workflow ran successfully and skipped replacing the existing release. A future version build still requires the explicitly approved signing secret; that upload remains pending. An on-device upgrade has not been verified. Test the first published update on the existing installed app and confirm its saved progress and recordings remain available.
