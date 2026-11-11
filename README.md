@@ -1,4 +1,4 @@
-# VietLingo HU — Android, 0.3.1
+# VietLingo HU — Android, 0.3.2
 
 Magyar nyelvű, északi vietnámit célzó tanulóalkalmazás. Az első lecke teljesen kezdőknek készült: három kifejezést **előbb megtanít**, és csak ezután kérdez. Nem kell még mondatokat alkotni vagy vietnámi tónusokat ismerni.
 
@@ -6,13 +6,13 @@ Magyar nyelvű, északi vietnámit célzó tanulóalkalmazás. Az első lecke te
 
 A telefonra telepíthető fájl: **`release/VietLingo-HU-Android.apk`**. A projekt nyilvános GitHub-tárolója: [daisy169903-stack/language-app](https://github.com/daisy169903-stack/language-app). A kiadások az APK-t tartalmazzák; a podcast-hangcsomag külön privát fájl.
 
-Ellenőrzött kiadás: [v0.3.0](https://github.com/daisy169903-stack/language-app/releases/tag/v0.3.0). Ezt a helyben aláírt APK-ból tettük közzé; az aláírókulcs nem került feltöltésre. A jövőbeli Actions-buildek aláírásához a külön jóváhagyásra váró secretbeállítás még szükséges.
+Kiadások: [GitHub Releases](https://github.com/daisy169903-stack/language-app/releases). Ezt a helyben aláírt APK-ból tettük közzé; az aláírókulcs nem került feltöltésre. A jövőbeli Actions-buildek aláírásához a külön jóváhagyásra váró secretbeállítás még szükséges.
 
-1. Töltsd le az APK-t a telefonodra a saját Google Drive-odból.
+1. Töltsd le az APK-t a telefonodra a GitHub legfrissebb kiadásából.
 2. Nyisd meg a letöltött fájlt, és kövesd az Android telepítőjének lépéseit.
 3. Indítsd el a **VietLingo HU** alkalmazást.
 
-Android 7.0 vagy újabb rendszer kell. Ez személyes használatra készült, helyi fejlesztői kulccsal aláírt **debug APK**, nem Play Áruházas kiadás. Az elkészült APK minden jelenlegi leckét, betűkészletet és illusztrációt tartalmaz: használatához nem kell PC, futó szerver, internet vagy felhasználói fiók.
+Android 7.0 vagy újabb rendszer kell. Ez személyes használatra készült, helyi fejlesztői kulccsal aláírt **debug APK**, nem Play Áruházas kiadás. Az elkészült APK minden jelenlegi leckét, betűkészletet és illusztrációt tartalmaz: a leckékhez nem kell PC, futó szerver vagy felhasználói fiók. Az eredeti podcast online lejátszásához internet szükséges.
 
 Részletes fejlesztői információ: [docs/ANDROID.md](docs/ANDROID.md).
 
@@ -41,7 +41,7 @@ Az Android-alkalmazás és a régi PC-s/böngészős változat tárhelye külön
 
 ## Nyelvi és hanganyag-státusz
 
-**A vietnámi tananyag ellenőrzésre váró vázlat, nem anyanyelvi beszélő által jóváhagyott tartalom.** Jóváhagyás után saját hangcsomagok valódi WAV-hangja játszható le a tanulókártyákon. TTS és külön hallásértési gyakorlat nincs. Nem jelenítünk meg kitalált hanganyagot vagy hallásértési pontszámot. A későbbi leckékben a megszólítások, udvariasság és természetes mondatok az alapok után következnek.
+**A vietnámi tananyag ellenőrzésre váró vázlat, nem anyanyelvi beszélő által jóváhagyott tartalom.** A chào és cảm ơn kártyán import nélkül meghallgatható az eredeti, szabadon elérhető északi podcast időzített részlete. Ehhez internet kell; az automatikus időzítés nem anyanyelvi jóváhagyás. A saját, jóváhagyott WAV-felvétel elsőbbséget élvez és offline is működik. TTS és külön hallásértési gyakorlat nincs. Nem jelenítünk meg kitalált hanganyagot vagy hallásértési pontszámot. A későbbi leckékben a megszólítások, udvariasság és természetes mondatok az alapok után következnek.
 
 A korábbi alapfogalmak áttekintéséhez háttérforrásként használtuk Tung Hoang [Basic Vietnamese — Vocabulary](https://openbooks.lib.msu.edu/vietnamese/chapter/u1-vocabulary/) tananyagát. Ez nem a magyar magyarázatok vagy a hanoi kiejtés anyanyelvi jóváhagyása.
 
@@ -79,7 +79,7 @@ node node_modules/typescript/bin/tsc -b
 node node_modules/vite/bin/vite.js build
 ```
 
-A 26 TypeScript/domain-/IndexedDB-/frissítési/buildvédelmi teszt és a 9 Python hangfeldolgozó-teszt sikeres, beleértve a régi mentések adatvesztés nélküli migrációját. A production build és a mobilos böngészőteszt is sikeres. Utóbbi 320/390/412 px telefonos nézeteket, asztali előnézetet, tanítás előtti kérdezés kizárását, az első lecke teljes menetét, helyi mentést, újratöltést, export/importot, saját szókincset és az ismétlés XP-korlátját ellenőrzi. A normál input tulajdonságait és a saját karakterbillentyűzet hiányát is vizsgálja.
+A 27 TypeScript/domain-/IndexedDB-/frissítési/buildvédelmi teszt és a 9 Python hangfeldolgozó-teszt sikeres, beleértve a régi mentések adatvesztés nélküli migrációját. A production build és a mobilos böngészőteszt is sikeres. Utóbbi 320/390/412 px telefonos nézeteket, asztali előnézetet, tanítás előtti kérdezés kizárását, az első lecke teljes menetét, helyi mentést, újratöltést, export/importot, saját szókincset és az ismétlés XP-korlátját ellenőrzi. A normál input tulajdonságait és a saját karakterbillentyűzet hiányát is vizsgálja.
 
 Opcionális böngészőteszt, futó production preview mellett:
 
@@ -103,3 +103,9 @@ A szabadon elérhető [Vietlingo Greetings északi epizódon](https://vietlingo.
 A podcastfelvétel, átirat, modellek, klipcsomag és aláírókulcs nincs a GitHub-forrásban vagy az APK-ban. A Vite buildvédelem elutasítja a privát hangcsomagokat és az engedélyezési adatok nélküli hangokat a public mappában. A telefonon importált hangok az IndexedDB-hangtárban maradnak, alkalmazásfrissítéskor nem cseréljük le őket.
 
 A tests/audio-ui.mjs az induláskori frissítési jelzést, a hangimportot, a lejátszás + megerősítés feltételét, a valós pending csomag betöltését, a WAV-lejátszást és a sérült csomag elutasítását ellenőrzi. A jóváhagyás mechanikus tesztje külön szintetikus síphangot használ, nem igazolja a vietnámi kiejtést. Fizikai telefonos upgrade, billentyűzet és lejátszás még készüléktesztet igényel.
+
+## Első szavak online hangja (0.3.2)
+
+A `src/sourceAudio.ts` csak az eredeti kiadói MP3 URL-jét, a forrásoldalt és a chào / cảm ơn időbélyegeit tartalmazza. Nem másol hangot az APK-ba, nem importál vagy hagy jóvá klipet. A lejátszó a metaadatok és az időpontra ugrás befejezése után indítja a hangot, és a részlet végén leáll. Internet és az eredeti kiadói kiszolgáló elérhetősége szükséges. A tạm biệt hangja továbbra sem érhető el ebből az epizódból.
+
+A `tests/source-audio-ui.mjs` a valódi kiadói MP3 dekódolását, a helyes kezdési/végpontot és az újrajátszást ellenőrzi mobilos böngészőnézetben. Nem igazolja a fizikai Android-készülék lejátszását vagy az anyanyelvi lektorálást.

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { loadAudioLibrary, type SavedAudio } from "../audioLibrary";
+import { sourceAudioFor } from "../sourceAudio";
+import SourceAudioPlayer from "./SourceAudioPlayer";
 export default function AudioPlayer({ audioId }: { audioId: string }) {
   const [clip, setClip] = useState<SavedAudio>();
   const [url, setUrl] = useState("");
@@ -30,7 +32,10 @@ export default function AudioPlayer({ audioId }: { audioId: string }) {
     setUrl(next);
     return () => URL.revokeObjectURL(next);
   }, [clip]);
-  if (!clip || !url)
+  const source = sourceAudioFor(audioId);
+  if ((!clip || !url || clip.id !== audioId) && source)
+    return <SourceAudioPlayer key={audioId} source={source} />;
+  if (!clip || !url || clip.id !== audioId)
     return (
       <div className="audio-unavailable">
         <VolumeX size={16} />
